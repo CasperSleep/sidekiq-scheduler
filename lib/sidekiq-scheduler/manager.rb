@@ -15,7 +15,8 @@ module SidekiqScheduler
     include Sidekiq::Util
 
     def initialize(options)
-      Sidekiq::Scheduler.enabled = options[:enabled]
+      enabled = Sidekiq::Scheduler.enabled
+      Sidekiq::Scheduler.enabled = enabled.nil? && options[:enabled] || enabled
       Sidekiq::Scheduler.dynamic = options[:dynamic]
       Sidekiq.schedule = options[:schedule] if options[:schedule]
     end
